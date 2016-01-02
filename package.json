@@ -1,0 +1,22 @@
+{
+  "name": "homify",
+  "version": "1.0.0",
+  "description": "Gamification of the home for chores, education, and general homelife.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gtg489w/Homify.git"
+  },
+  "author": "Ken Bailey <kenneth.ross.bailey@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gtg489w/Homify/issues"
+  },
+  "homepage": "https://github.com/gtg489w/Homify#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
