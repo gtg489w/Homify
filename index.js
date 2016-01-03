@@ -9,6 +9,42 @@ app.use(bodyParser.json());
 
 
 ////////////////////////////////////////////////////////////////
+// Config
+////////////////////////////////////////////////////////////////
+var dlHeaders = [{
+	name: 'Authtoken',
+	value: 'e8a801785c419ef3c6588ff7659689cb0165d457afdb2bdb4084610b1f1d84accd669c59a414c0dee7cdaeb2de91330c0f3077877e49d30061f9bcc3f87fd3c3940e891da074b36bf91594ea47bdc95af75292c386f3f718e087129c389ebca6158f49cb1a813f7abd7b2955'
+},{
+	name: 'Appkey',
+	value: 'JE_69AE31D2465E39EF_1'
+},{
+	name: 'Requesttoken',
+	value: 'e5ebd2633d726882a41816ad2f3e753f'
+}];
+
+dlConfig = {
+	applicationId: 'JE_69AE31D2465E39EF_1',
+	igloo: 'igloo14',
+	username: '553474453',
+	password: 'NO-PASSWD',
+	gateway: 'ECCA001228754F079ADCB3FE25E65154'
+};
+
+var dlDevices = [{
+	name: 'light',
+	guid: 'DE00000005',
+	evnt: 'switch' // on, off
+},{
+	name: 'plug',
+	guid: 'PE00000002',
+	evnt: 'switch' // on, off
+},{
+	name: 'lock',
+	guid: 'DL00000007',
+	evnt: 'lock' // lock, unlock
+}];
+
+////////////////////////////////////////////////////////////////
 // Data Store
 ////////////////////////////////////////////////////////////////
 
