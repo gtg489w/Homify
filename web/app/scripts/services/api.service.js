@@ -10,7 +10,10 @@
 
         function get(path, params) {
             var q = $q.defer();
-            $http.get(baseApiUrl + path, params).then(function(data) {
+            $http({
+                method: 'GET',
+                url: baseApiUrl + path
+            }).then(function(data) {
                 q.resolve(data);
             }, function (err) {
                 q.reject(err);
@@ -20,7 +23,11 @@
 
         function post(path, postData) {
             var q = $q.defer();
-            $http.post(baseApiUrl + path, postData).then(function(data) {
+            $http({
+                method: 'POST',
+                url: baseApiUrl + path,
+                postData
+            }).then(function(data) {
                 q.resolve(data);
             }, function (err) {
                 q.reject(err);
@@ -30,10 +37,10 @@
 
         var score = {
             get: function() {
-                return get('');
+                return get('points');
             },
             set: function(val) {
-                return post('', {
+                return post('points', {
                     points: val
                 });
             }
