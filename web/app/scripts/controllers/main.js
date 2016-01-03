@@ -114,9 +114,10 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 		ApiService.score.get().then(function(response) {
 			var points = response.data.points;
 			$scope.data.garbage = response.data.status.garbage;
+			$scope.data.parking = response.data.status.parking;
 			$scope.data.homework = response.data.status.homework;
 			if($scope.data.forcedTrash) {
-				$scope.data.garbage = true;
+				$scope.data.parking = true;
 				if(points == 450) {
 					points = 500;
 				} else if(points == 150) {

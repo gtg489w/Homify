@@ -26,6 +26,17 @@ var dlConfig = {
 	gateway: 'ECCA001228754F079ADCB3FE25E65154'
 };
 
+var scConfig = {
+	parkingSensor: {
+		deviceId: '50e76f69e40eae98b4a755052b187e1f' // FF-5
+		// deviceId: '5593cdd51170dc63e00ae575' // Stage Left (FastPrk)
+		// deviceId: '561387c711705b068730f4b1' // Stage Right (FastPrk)
+	},
+	garbageCan: {
+		deviceId: 'e3304702d4bb9e1a41acf73425d63fd0'
+	}
+};
+
 var m2xHeaders = {
 	'Content-Type': 'application/json',
 	'X-M2X-KEY': '346e3f0b4ced985f81b4ab17afa37b0b'
@@ -86,7 +97,7 @@ app.get('/api/points', function (req, res) {
 	scoreboard.points = points;
 	scoreboard.status = deviceStatus;
 
-	if(points >= 400) {
+	if(points >= 500) {
 		dlLock('unlock');
 		dlPlug('on');
 		dlLight('on');
@@ -133,10 +144,9 @@ app.get('/api/open', function (req, res) {
 // SmartCities / M2X
 
 var intGarbageCan = function() {
-	return;
 	var options = {
 		host: 'api-m2x.att.com',
-		path: '/v2/devices/e3304702d4bb9e1a41acf73425d63fd0/streams/level'
+		path: '/v2/devices/' + scConfig.garbageCan.deviceId + '/streams/level'
 	};
 
 	callback = function(response) {
@@ -155,13 +165,15 @@ var intGarbageCan = function() {
 			}
 		});
 	};
-	http.request(options, callback).end();
+	var request = http.request(options, callback);
+	request.on('error', function(err) {});
+	request.end();
 };
 
 var intParkingSpot = function() {
 	var options = {
 		host: 'api-m2x.att.com',
-		path: '/v2/devices/50e76f69e40eae98b4a755052b187e1f/streams/parking-spot'
+		path: '/v2/devices/' + scConfig.parkingSensor.deviceId + '/streams/parking-spot'
 	};
 	// fpmfll5
 
@@ -172,18 +184,21 @@ var intParkingSpot = function() {
 		});
 		response.on('end', function () {
 			var occupied = JSON.parse(JSON.parse(str).value).occupied;
-			console.log('occupited');
+			console.log('occupied');
 			console.log(occupied);
+			console.log(str);
 			if(occupied == 'true' || occupied == true) {
-				console.log('garbage (parking) full');
+				console.log('parking full');
 				deviceStatus.parking = false;
 			} else {
-				console.log('garbage (parking) empty');
+				console.log('parking empty');
 				deviceStatus.parking = true;
 			}
 		});
 	};
-	http.request(options, callback).end();
+	var request = http.request(options, callback);
+	request.on('error', function(err) {});
+	request.end();
 };
 
 var postPoints = function(points) {
