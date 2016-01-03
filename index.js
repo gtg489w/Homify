@@ -3,8 +3,22 @@ var app = express();
 
 app.use(express.static('web'));
 
+
+
+
+var pipe = {
+	leaky: false
+};
+
+
+
+
 app.get('/api', function (req, res) {
-    res.send('Hello Homify API!');
+    res.send(pipe);
+});
+
+app.post('/api', function (req, res) {
+    console.log(req);
 });
 
 app.listen(3000, function () {
