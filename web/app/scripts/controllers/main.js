@@ -3,6 +3,7 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiS
 
 	$scope.getPoints = function() {
 		ApiService.score.get();
+		myCircle.update(50);
 	};
 
 	$scope.setHomework = function() {
