@@ -54,9 +54,14 @@
             }
         };
 
+        var reset = function() {
+            return get('reset');
+        };
+
         return {
             score: score,
-            homework: homework
+            homework: homework,
+            reset: reset
         };
     }
 }());

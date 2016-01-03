@@ -75,7 +75,6 @@ app.get('/api/points', function (req, res) {
 	// points += 100;
 	// }
 	if(deviceStatus.parking) { // faked garbage
-		console.log(deviceStatus.parking);
 		points += 50;
 	}
 	if(deviceStatus.dishes) {
@@ -87,7 +86,7 @@ app.get('/api/points', function (req, res) {
 	scoreboard.points = points;
 	scoreboard.status = deviceStatus;
 
-	if(points >= 500) {
+	if(points >= 400) {
 		dlLock('unlock');
 		dlPlug('on');
 		dlLight('on');
@@ -110,9 +109,11 @@ app.post('/api/homework', function (req, res) {
 });
 
 app.get('/api/reset', function (req, res) {
+	deviceStatus.homework = false;
 	dlLock('lock');
 	dlPlug('off');
 	dlLight('off');
+	console.log('reset');
     res.status(201).send();
 });
 
@@ -131,6 +132,7 @@ app.get('/api/open', function (req, res) {
 // SmartCities / M2X
 
 var intGarbageCan = function() {
+	return;
 	var options = {
 		host: 'api-m2x.att.com',
 		path: '/v2/devices/e3304702d4bb9e1a41acf73425d63fd0/streams/level'
@@ -142,7 +144,6 @@ var intGarbageCan = function() {
 			str += chunk;
 		});
 		response.on('end', function () {
-			//console.log(str);
 			console.log(
 				'Current Garbage Can Level: ' + JSON.parse(str).value
 			);
@@ -169,7 +170,10 @@ var intParkingSpot = function() {
 			str += chunk;
 		});
 		response.on('end', function () {
-			if(JSON.parse(JSON.parse(JSON.parse(str).value).occupied)) {
+			var occupied = JSON.parse(JSON.parse(str).value).occupied;
+			console.log('occupited');
+			console.log(occupied);
+			if(occupied == 'true' || occupied == true) {
 				console.log('garbage (parking) full');
 				deviceStatus.parking = false;
 			} else {
@@ -191,11 +195,9 @@ var postPoints = function(points) {
 		headers: m2xHeaders
 	};
 	var req = http.request(options, function(res) {
-		console.log('Status: ' + res.statusCode);
-		console.log('Headers: ' + JSON.stringify(res.headers));
 		res.setEncoding('utf8');
 		res.on('data', function (body) {
-			console.log('Body: ' + body);
+			// console.log('Body: ' + body);
 		});
 	});
 	req.on('error', function(e) {
@@ -222,7 +224,6 @@ var dlLock = function(status) {
 		if(err) {
 			return console.error(err.message);
 		}
-		console.log(res.body);
 	});
 };
 
@@ -235,7 +236,6 @@ var dlPlug = function(status) {
 		if(err) {
 			return console.error(err.message);
 		}
-		console.log(res.body);
 	});
 };
 
@@ -248,7 +248,6 @@ var dlLight = function(status) {
 		if(err) {
 			return console.error(err.message);
 		}
-		console.log(res.body);
 	});
 };
 
@@ -256,42 +255,18 @@ var dlLight = function(status) {
 // Setup The Server
 ////////////////////////////////////////////////////////////////
 
-postPoints(20);
-setTimeout(function() {
-	postPoints(30);
-	setTimeout(function() {
-		postPoints(40);
-		setTimeout(function() {
-			postPoints(50);
-			setTimeout(function() {
-				postPoints(60);
-				setTimeout(function() {
-					postPoints(70);
-					setTimeout(function() {
-						postPoints(80);
-						setTimeout(function() {
-							postPoints(90);
-							setTimeout(function() {
-								postPoints(100);
-							}, 4000);
-						}, 4000);
-					}, 4000);
-				}, 4000);
-			}, 4000);
-		}, 4000);
-	}, 4000);
-}, 4000);
+
 
 var interval = function() {
 	intGarbageCan();
 	intParkingSpot();
 };
 
-// interval();
-// setInterval(interval, 5000);
+interval();
+setInterval(interval, 5000);
 
 app.listen(3000, function () {
-    console.log('Homify is now listening on port 3000');
+    console.log('Level Up is now listening on port 3000');
 });
 
 

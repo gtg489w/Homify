@@ -6,11 +6,11 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="avatar-container">
-				<div class="avatar"></div>
+				<div class="avatar" ng-click="reset()"></div>
 				<div class="error-webrtc" ng-show="webrtc.error">
 					WebRTC is down. <a ng-click="restartWebRTC()">Click here</a> to reinitiate it.
 				</div>
-				<div class="webrtc-btn" ng-show="!webrtc.error">
+				<div class="webrtc-btn" ng-show="!webrtc.error && !webrtc.viewing">
 					<button class="btn btn-large btn-floating" ng-click="callDispatcher()"><img src="images/video.png" width="30px" /></button>
 				</div>
 

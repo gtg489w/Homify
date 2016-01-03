@@ -47,7 +47,7 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 		$http.post('https://www.attwebrtc.com/hackathon/demo/dhs/token.php', JSON.stringify({ app_scope: "ACCOUNT_ID" })).then(function (result) {
 			accessToken = result.data;
 			phone.associateAccessToken({
-				userId: 'levelupCaller',
+				userId: 'levelupCaller2',
 				token: accessToken.access_token,
 				success: function () {
 					phone.login({
@@ -63,7 +63,7 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 
 	var dailThePhone = function () {
 		phone.dial({
-			destination: phone.cleanPhoneNumber("levelupCallee" + myDHSURL),
+			destination: phone.cleanPhoneNumber("levelupCallee2" + myDHSURL),
 			mediaType: 'video',
 			localMedia: $('#local')[0],
 			remoteMedia: $('#remote')[0]
@@ -126,6 +126,9 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 		});
 	};
 
+	$scope.reset = function() {
+		ApiService.reset();
+	};
 
 	////////////////////////////////////////////////////////////////
 	// Setup
