@@ -201,7 +201,13 @@ var postPoints = function(points) {
 	req.on('error', function(e) {
 		console.log('problem with request: ' + e.message);
 	});
-	req.write('{ "values": [{ "timestamp": "2014-09-09T19:15:00.624Z", "value": 32 },{ "timestamp": "2014-09-09T20:15:00.522Z", "value": 30 },{ "timestamp": "2014-09-09T21:15:00.522Z", "value": 15 } ]}');
+
+	var d = new Date();
+	var hours = ("0" + d.getHours()).substr(-2);
+	var minutes = ("0" + d.getMinutes()).substr(-2);
+	var seconds = ("0" + d.getSeconds()).substr(-2);
+
+	req.write('{ "values": [{ "timestamp": "2016-01-03T'+hours+':'+minutes+':'+seconds+'.000Z", "value": '+points+' }] }');
 	req.end();
 };
 
@@ -251,6 +257,30 @@ var dlLight = function(status) {
 ////////////////////////////////////////////////////////////////
 
 postPoints(20);
+setTimeout(function() {
+	postPoints(30);
+	setTimeout(function() {
+		postPoints(40);
+		setTimeout(function() {
+			postPoints(50);
+			setTimeout(function() {
+				postPoints(60);
+				setTimeout(function() {
+					postPoints(70);
+					setTimeout(function() {
+						postPoints(80);
+						setTimeout(function() {
+							postPoints(90);
+							setTimeout(function() {
+								postPoints(100);
+							}, 4000);
+						}, 4000);
+					}, 4000);
+				}, 4000);
+			}, 4000);
+		}, 4000);
+	}, 4000);
+}, 4000);
 
 var interval = function() {
 	intGarbageCan();
