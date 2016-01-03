@@ -18,6 +18,9 @@ app.get('/api/points', function (req, res) {
 app.post('/api/points', function (req, res) {
 	console.log('points!');
     scoreboard.points = req.body.points;
+    
+    // push point data to M2X
+
     res.status(201).send();
 });
 
