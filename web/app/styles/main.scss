@@ -126,6 +126,18 @@ LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; S
 .task-points-label {
 	text-align: center;
 }
+.checkbox {
+	width: 40px;
+	height: 40px;
+	border: 2px solid #2CCAD9;
+	border-radius: 100%;
+	position: relative;
+	top: -6px;
+}
+.checkbox.checked {
+	background: #2CCAD9 url(../images/check.png) center center no-repeat;
+	background-size: 20px 20px;
+}
 .webrtc-video-container {
 	position: absolute;
     top: 300px;
@@ -158,6 +170,7 @@ LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; S
 	right: 10px;
 	z-index: 20;
 }
+
 
 
 

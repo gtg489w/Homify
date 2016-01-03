@@ -40,7 +40,7 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 
 	$scope.hangup = function () {
 		phone.hangup();
-		$scope.hide.video = true;
+		$scope.webrtc.viewing = false;
 	};
 
 	var getAccessToken = function () {
@@ -113,6 +113,8 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 		ApiService.score.get().then(function(response) {
 			var points = response.data.points;
 			$scope.data.points = points;
+			$scope.data.garbage = response.data.status.garbage;
+			$scope.data.homework = response.data.status.homework;
 			myCircle.update(points);
 		});
 	};

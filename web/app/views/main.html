@@ -29,15 +29,6 @@
 				</br>
 				<video id="remote" style="width:100%;"></video>
 			</div>
-
-
-			<div>
-				<button ng-click="getPoints()">GET</button>
-				<button ng-click="setHomework()">POST</button>
-			</div>
-
-
-
 		</div>
 		<div class="col-md-6">
 			<div class="challenge">
@@ -57,7 +48,9 @@
 							<div class="task-points">300</div>
 							<div class="task-points-label">Points</div>
 						</div>
-						<div class="col-md-3">Checkbox</div>
+						<div class="col-md-3">
+							<div class="checkbox" ng-class="{ 'checked' : data.homework }" ng-click="setHomework()"></div>
+						</div>
 					</div>
 				</div>
 				<div class="challenge-row">
@@ -67,7 +60,9 @@
 							<div class="task-points">100</div>
 							<div class="task-points-label">Points</div>
 						</div>
-						<div class="col-md-3">Checkbox</div>
+						<div class="col-md-3">
+							<div class="checkbox checked"></div>
+						</div>
 					</div>
 				</div>
 				<div class="challenge-row">
@@ -77,7 +72,9 @@
 							<div class="task-points">50</div>
 							<div class="task-points-label">Points</div>
 						</div>
-						<div class="col-md-3">Checkbox</div>
+						<div class="col-md-3">
+							<div class="checkbox" ng-class="{ 'checked' : data.garbage }"></div>
+						</div>
 					</div>
 				</div>
 				<div class="challenge-row" style="border-bottom: 0px; padding-bottom: 10px;">
@@ -87,7 +84,9 @@
 							<div class="task-points">50</div>
 							<div class="task-points-label">Points</div>
 						</div>
-						<div class="col-md-3">Checkbox</div>
+						<div class="col-md-3">
+							<div class="checkbox checked"></div>
+						</div>
 					</div>
 				</div>
 			</div>
