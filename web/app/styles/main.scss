@@ -3,6 +3,12 @@
 LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; Selected (Accent) #FFD300
 
 */
+
+
+
+*, .btn, button {
+	outline: 0!important;
+}
 .btn, .btn-large {
 	background: #2CCAD9!important;
 }
@@ -61,6 +67,11 @@ LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; S
 	position: relative;
 	top: -260px;
 }
+.webrtc-btn {
+    position: absolute;
+    top: 150px;
+    left: 230px;
+}
 .error-webrtc {
     display: inline;
     background: rgba(255, 255, 255, .5);
@@ -82,8 +93,13 @@ LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; S
 .badge {
 	width: 200px;
 	height: 200px;
-	border: 1px solid #999;
+	background: url(../images/star.png) center center no-repeat;
+	background-size: contain;
 	float: left;
+	opacity: .3;
+}
+.badge.earned {
+	opacity: 1;
 }
 .badge-info {
 	float: left;
@@ -127,7 +143,8 @@ LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; S
 	z-index: 10;
 }
 #local {
-	background: #abcdef;
+	background: #000;
+	border: 1px solid #fff;
 	position: absolute;
 	top: 10px;
 	left: 10px;

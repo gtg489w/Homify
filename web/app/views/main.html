@@ -7,8 +7,11 @@
 		<div class="col-md-6">
 			<div class="avatar-container">
 				<div class="avatar"></div>
-				<div class="error-webrtc" ng-show="true || webrtc.error">
+				<div class="error-webrtc" ng-show="webrtc.error">
 					WebRTC is down. <a ng-click="restartWebRTC()">Click here</a> to reinitiate it.
+				</div>
+				<div class="webrtc-btn" ng-show="!webrtc.error">
+					<button class="btn btn-large btn-floating" ng-click="callDispatcher()"><img src="images/video.png" width="30px" /></button>
 				</div>
 
 				<div class="username"><span style="font-weight: 100">Sam</span>Patterson</div>
@@ -20,8 +23,8 @@
 				<b>{{ 500 - data.points }}</b> Points to Next Reward
 			</div>
 
-			<div class="webrtc-video-container">
-				<button class="end-session btn">End Session</button>
+			<div class="webrtc-video-container" ng-show="webrtc.viewing">
+				<button class="end-session btn" ng-click="hangup()">End Session</button>
 				<video id="local" style="width:220px; height: 140px;"></video>
 				</br>
 				<video id="remote" style="width:100%;"></video>
@@ -31,8 +34,6 @@
 			<div>
 				<button ng-click="getPoints()">GET</button>
 				<button ng-click="setHomework()">POST</button>
-				<button ng-click="callDispatcher()">call person</button>
-				<button ng-click="hangup()">end call</button>
 			</div>
 
 
@@ -41,7 +42,7 @@
 		<div class="col-md-6">
 			<div class="challenge">
 				<div class="challenge-row">
-					<div class="badge">&nbsp;</div>
+					<div class="badge" ng-class="{ 'earned' : data.points >= 500 }">&nbsp;</div>
 					<div class="badge-info">
 						<div class="badge-title">Unlock XBox</div>
 						<div class="badge-points">500</div>
@@ -51,7 +52,7 @@
 				</div>
 				<div class="challenge-row">
 					<div class="row">
-						<div class="col-md-6 task-title">Math Homework</div>
+						<div class="col-md-6 task-title"><img src="images/text.png" width="30px" style="margin-right: 10px;" /> Math Homework</div>
 						<div class="col-md-3">
 							<div class="task-points">300</div>
 							<div class="task-points-label">Points</div>
@@ -61,7 +62,7 @@
 				</div>
 				<div class="challenge-row">
 					<div class="row">
-						<div class="col-md-6 task-title">Exercise Bike - 30 Min</div>
+						<div class="col-md-6 task-title"><img src="images/bike.png" width="40px" /> Exercise Bike - 30 Min</div>
 						<div class="col-md-3">
 							<div class="task-points">100</div>
 							<div class="task-points-label">Points</div>
@@ -71,7 +72,7 @@
 				</div>
 				<div class="challenge-row">
 					<div class="row">
-						<div class="col-md-6 task-title">Garbage</div>
+						<div class="col-md-6 task-title"><img src="images/trash.png" width="30px" style="margin-right: 10px;" /> Garbage</div>
 						<div class="col-md-3">
 							<div class="task-points">50</div>
 							<div class="task-points-label">Points</div>
@@ -81,7 +82,7 @@
 				</div>
 				<div class="challenge-row" style="border-bottom: 0px; padding-bottom: 10px;">
 					<div class="row">
-						<div class="col-md-6 task-title">Dishes</div>
+						<div class="col-md-6 task-title"><img src="images/glass.png" width="30px" style="margin-right: 10px;" /> Dishes</div>
 						<div class="col-md-3">
 							<div class="task-points">50</div>
 							<div class="task-points-label">Points</div>

@@ -16,7 +16,8 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 
 	$scope.webrtc = {
 		error: false,
-		restarting: false
+		restarting: false,
+		viewing: false
 	};
 
 	$scope.data = {
@@ -29,10 +30,11 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 	////////////////////////////////////////////////////////////////
 
 	phone.on('error', function () {
-		$scope.webrtc.error = true;
+		// $scope.webrtc.error = true;
 	});
 
 	$scope.callDispatcher = function () {
+		$scope.webrtc.viewing = true;
 		dailThePhone();
 	};
 
