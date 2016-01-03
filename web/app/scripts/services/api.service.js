@@ -6,7 +6,7 @@
     ApiService.$inject = ['$http', '$q'];
 
     function ApiService ($http, $q) {
-        var baseApiUrl = 'http://google.com/';
+        var baseApiUrl = 'http://localhost:3000/api/';
 
         function get(path, params) {
             var q = $q.defer();
@@ -31,6 +31,11 @@
         var score = {
             get: function() {
                 return get('');
+            },
+            set: function(val) {
+                return post('', {
+                    points: val
+                });
             }
         };
 
