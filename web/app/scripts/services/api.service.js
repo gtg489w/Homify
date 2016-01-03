@@ -26,7 +26,7 @@
             $http({
                 method: 'POST',
                 url: baseApiUrl + path,
-                postData
+                data: postData
             }).then(function(data) {
                 q.resolve(data);
             }, function (err) {
@@ -46,8 +46,17 @@
             }
         };
 
+        var homework = {
+            set: function(done) {
+                return post('homework', {
+                    complete: done
+                });
+            }
+        };
+
         return {
-            score: score
+            score: score,
+            homework: homework
         };
     }
 }());
