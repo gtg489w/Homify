@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var http = require('http');
+var request = require('request');
 
 app.use(express.static('web'));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -11,16 +12,11 @@ app.use(bodyParser.json());
 ////////////////////////////////////////////////////////////////
 // Config
 ////////////////////////////////////////////////////////////////
-var dlHeaders = [{
-	name: 'Authtoken',
-	value: 'e8a801785c419ef3c6588ff7659689cb0165d457afdb2bdb4084610b1f1d84accd669c59a414c0dee7cdaeb2de91330c0f3077877e49d30061f9bcc3f87fd3c3940e891da074b36bf91594ea47bdc95af75292c386f3f718e087129c389ebca6158f49cb1a813f7abd7b2955'
-},{
-	name: 'Appkey',
-	value: 'JE_69AE31D2465E39EF_1'
-},{
-	name: 'Requesttoken',
-	value: 'e5ebd2633d726882a41816ad2f3e753f'
-}];
+var dlHeaders = {
+	'Authtoken': 'e8a801785c419ef3c6588ff7659689cb0165d457afdb2bdb4084610b1f1d84accd669c59a414c0dee7cdaeb2de91330c0f3077877e49d30061f9bcc3f87fd3c3940e891da074b36bf91594ea47bdc95af75292c386f3f718e087129c389ebca6158f49cb1a813f7abd7b2955',
+	'Appkey': 'JE_69AE31D2465E39EF_1',
+	'Requesttoken': 'e5ebd2633d726882a41816ad2f3e753f'
+};
 
 dlConfig = {
 	applicationId: 'JE_69AE31D2465E39EF_1',
@@ -30,19 +26,20 @@ dlConfig = {
 	gateway: 'ECCA001228754F079ADCB3FE25E65154'
 };
 
-var dlDevices = [{
-	name: 'light',
-	guid: 'DE00000005',
-	evnt: 'switch' // on, off
-},{
-	name: 'plug',
-	guid: 'PE00000002',
-	evnt: 'switch' // on, off
-},{
-	name: 'lock',
-	guid: 'DL00000007',
-	evnt: 'lock' // lock, unlock
-}];
+var dlDevices = {
+	'light': {
+		guid: 'DE00000005',
+		evnt: 'switch' // on, off
+	},
+	'plug': {
+		guid: 'PE00000002',
+		evnt: 'switch' // on, off
+	},
+	'lock': {
+		guid: 'DL00000007',
+		evnt: 'lock' // lock, unlock
+	}
+};
 
 ////////////////////////////////////////////////////////////////
 // Data Store
@@ -85,16 +82,17 @@ app.get('/api/points', function (req, res) {
 	scoreboard.points = points;
 	scoreboard.status = deviceStatus;
 
+	if(points >= 500) {
+		dlLock('unlock');
+		dlPlug('on');
+		dlLight('on');
+	}
+
 	// push point data to M2X
+	
 
     res.json(scoreboard);
 });
-
-// app.post('/api/points', function (req, res) {
-// console.log('points!');
-//     scoreboard.points = req.body.points;
-//     res.status(201).send();
-// });
 
 app.post('/api/homework', function (req, res) {
 	if(req.body.complete) {
@@ -106,10 +104,26 @@ app.post('/api/homework', function (req, res) {
     res.status(201).send();
 });
 
+app.get('/api/reset', function (req, res) {
+	dlLock('lock');
+	dlPlug('off');
+	dlLight('off');
+    res.status(201).send();
+});
+
+app.get('/api/open', function (req, res) {
+	dlLock('unlock');
+	dlPlug('on');
+	dlLight('on');
+    res.status(201).send();
+});
+
 
 ////////////////////////////////////////////////////////////////
 // Integrations
 ////////////////////////////////////////////////////////////////
+
+// SmartCities / M2X
 
 var intGarbageCan = function() {
 	var options = {
@@ -162,13 +176,56 @@ var intParkingSpot = function() {
 	http.request(options, callback).end();
 };
 
+var dlLock = function(status) {
+	request({
+		method: 'POST',
+		url: 'https://systest.digitallife.att.com:443/penguin/api/'+dlConfig.gateway+'/devices/'+dlDevices.lock.guid+'/lock/' + status,
+		headers: dlHeaders
+	}, function (err, res) {
+		if(err) {
+			return console.error(err.message);
+		}
+		console.log(res.body);
+	});
+};
+
+var dlPlug = function(status) {
+	request({
+		method: 'POST',
+		url: 'https://systest.digitallife.att.com:443/penguin/api/'+dlConfig.gateway+'/devices/'+dlDevices.plug.guid+'/switch/' + status,
+		headers: dlHeaders
+	}, function (err, res) {
+		if(err) {
+			return console.error(err.message);
+		}
+		console.log(res.body);
+	});
+};
+
+var dlLight = function(status) {
+	request({
+		method: 'POST',
+		url: 'https://systest.digitallife.att.com:443/penguin/api/'+dlConfig.gateway+'/devices/'+dlDevices.light.guid+'/switch/' + status,
+		headers: dlHeaders
+	}, function (err, res) {
+		if(err) {
+			return console.error(err.message);
+		}
+		console.log(res.body);
+	});
+};
+
+////////////////////////////////////////////////////////////////
+// Setup The Server
+////////////////////////////////////////////////////////////////
+
 var interval = function() {
 	intGarbageCan();
 	intParkingSpot();
 };
 
-interval();
-setInterval(interval, 5000);
+// interval();
+// setInterval(interval, 5000);
 
 app.listen(3000, function () {
     console.log('Homify is now listening on port 3000');
