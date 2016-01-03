@@ -10,11 +10,31 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiS
 	var accessToken = null;
 	var myDHSURL = '@attwebrtc.com';
 
+	////////////////////////////////////////////////////////////////
+	// State
+	////////////////////////////////////////////////////////////////
 
+	$scope.webrtc = {
+		error: false,
+		restarting: false
+	};
 
 	////////////////////////////////////////////////////////////////
 	// Caller WebRTC
 	////////////////////////////////////////////////////////////////
+
+	phone.on('error', function () {
+		$scope.webrtc.error = true;
+	});
+
+	$scope.callDispatcher = function () {
+		dailThePhone();
+	};
+
+	$scope.hangup = function () {
+		phone.hangup();
+		$scope.hide.video = true;
+	};
 
 	var getAccessToken = function () {
 		$http.post('https://www.attwebrtc.com/hackathon/demo/dhs/token.php', JSON.stringify({ app_scope: "ACCOUNT_ID" })).then(function (result) {
@@ -23,8 +43,9 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiS
 				userId: 'levelupCaller',
 				token: accessToken.access_token,
 				success: function () {
-					phone.login({ token: accessToken.access_token });
-
+					phone.login({
+						token: accessToken.access_token
+					});
 				},
 				error: function () {
 					phone.logout();
@@ -42,12 +63,19 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiS
 		});
 	};
 
-	$http.get('https://www.attwebrtc.com/hackathon/demo/dhs/config.php').then(function (result) {
-		myDHS = result.data;
-		getAccessToken();
+	var initWebRtc = function() {
+		$http.get('https://www.attwebrtc.com/hackathon/demo/dhs/config.php').then(function (result) {
+			myDHS = result.data;
+			getAccessToken();
+		});
+	};
+	initWebRtc();
 
-	});
-
+	$scope.restartWebRTC = function() {
+		$scope.webrtc.error = false;
+		$scope.webrtc.restarting = true;
+		initWebRtc();
+	};
 
 
 

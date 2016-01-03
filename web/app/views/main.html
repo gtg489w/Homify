@@ -1,6 +1,24 @@
+<div class="header-container">
+</div>
+
+<div class="content-container">
+
+</div>
+
+
+
+
+
+
+<div ng-show="true || webrtc.error">
+	WebRTC is down. <a on-click="restartWebRTC()">Click here</a> to reinitiate it.
+</div>
+
+
 <button ng-click="getPoints()">GET</button>
 <button ng-click="setHomework()">POST</button>
-
+<button ng-click="callDispatcher()">call person</button>
+<button ng-click="hangup()">end call</button>
 
 
 <div class="circle" id="circles-1"></div>
