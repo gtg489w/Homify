@@ -118,6 +118,7 @@ app.get('/api/reset', function (req, res) {
 });
 
 app.get('/api/open', function (req, res) {
+	console.log('complete!');
 	dlLock('unlock');
 	dlPlug('on');
 	dlLight('on');

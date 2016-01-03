@@ -22,7 +22,8 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 
 	$scope.data = {
 		points: null,
-		homework: false
+		homework: false,
+		forcedTrash: false
 	};
 
 	////////////////////////////////////////////////////////////////
@@ -112,9 +113,20 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 	$scope.getPoints = function() {
 		ApiService.score.get().then(function(response) {
 			var points = response.data.points;
-			$scope.data.points = points;
 			$scope.data.garbage = response.data.status.garbage;
 			$scope.data.homework = response.data.status.homework;
+			if($scope.data.forcedTrash) {
+				$scope.data.garbage = true;
+				if(points == 450) {
+					points = 500;
+				} else if(points == 150) {
+					points = 200;
+				}
+			}
+			$scope.data.points = points;
+			if(points == 500) {
+				$scope.forceComplete();
+			}
 			myCircle.update(points);
 		});
 	};
@@ -126,7 +138,17 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $int
 		});
 	};
 
+	$scope.forceTrash = function() {
+		$scope.data.forcedTrash = true;
+		$scope.getPoints();
+	};
+
+	$scope.forceComplete = function() {
+		ApiService.done();
+	};
+
 	$scope.reset = function() {
+		$scope.data.forcedTrash = false;
 		ApiService.reset();
 	};
 

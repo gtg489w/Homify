@@ -58,10 +58,15 @@
             return get('reset');
         };
 
+        var done = function() {
+            return get('open');
+        };
+
         return {
             score: score,
             homework: homework,
-            reset: reset
+            reset: reset,
+            done: done
         };
     }
 }());
