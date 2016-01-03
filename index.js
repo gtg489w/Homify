@@ -18,12 +18,17 @@ var dlHeaders = {
 	'Requesttoken': 'e5ebd2633d726882a41816ad2f3e753f'
 };
 
-dlConfig = {
+var dlConfig = {
 	applicationId: 'JE_69AE31D2465E39EF_1',
 	igloo: 'igloo14',
 	username: '553474453',
 	password: 'NO-PASSWD',
 	gateway: 'ECCA001228754F079ADCB3FE25E65154'
+};
+
+var m2xHeaders = {
+	'Content-Type': 'application/json',
+	'X-M2X-KEY': '346e3f0b4ced985f81b4ab17afa37b0b'
 };
 
 var dlDevices = {
@@ -89,9 +94,9 @@ app.get('/api/points', function (req, res) {
 	}
 
 	// push point data to M2X
+	postPoints(points);
 	
-
-    res.json(scoreboard);
+	res.json(scoreboard);
 });
 
 app.post('/api/homework', function (req, res) {
@@ -176,6 +181,32 @@ var intParkingSpot = function() {
 	http.request(options, callback).end();
 };
 
+var postPoints = function(points) {
+
+	var options = {
+		hostname: 'api-m2x.att.com',
+		port: 80,
+		path: '/v2/devices/547c4f27c34eed5aefc64e9153e73af8/streams/point-score/values',
+		method: 'POST',
+		headers: m2xHeaders
+	};
+	var req = http.request(options, function(res) {
+		console.log('Status: ' + res.statusCode);
+		console.log('Headers: ' + JSON.stringify(res.headers));
+		res.setEncoding('utf8');
+		res.on('data', function (body) {
+			console.log('Body: ' + body);
+		});
+	});
+	req.on('error', function(e) {
+		console.log('problem with request: ' + e.message);
+	});
+	req.write('{ "values": [{ "timestamp": "2014-09-09T19:15:00.624Z", "value": 32 },{ "timestamp": "2014-09-09T20:15:00.522Z", "value": 30 },{ "timestamp": "2014-09-09T21:15:00.522Z", "value": 15 } ]}');
+	req.end();
+};
+
+// Digital Life
+
 var dlLock = function(status) {
 	request({
 		method: 'POST',
@@ -218,6 +249,8 @@ var dlLight = function(status) {
 ////////////////////////////////////////////////////////////////
 // Setup The Server
 ////////////////////////////////////////////////////////////////
+
+postPoints(20);
 
 var interval = function() {
 	intGarbageCan();
