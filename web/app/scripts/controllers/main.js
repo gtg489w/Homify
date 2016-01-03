@@ -1,5 +1,5 @@
 'use strict';
-angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiService) {
+angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, $interval, ApiService) {
 
 	////////////////////////////////////////////////////////////////
 	// Config
@@ -17,6 +17,11 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiS
 	$scope.webrtc = {
 		error: false,
 		restarting: false
+	};
+
+	$scope.data = {
+		points: null,
+		homework: false
 	};
 
 	////////////////////////////////////////////////////////////////
@@ -77,47 +82,57 @@ angular.module('homifyApp').controller('MainCtrl', function ($scope, $http, ApiS
 		initWebRtc();
 	};
 
+	////////////////////////////////////////////////////////////////
+	// Wheel
+	////////////////////////////////////////////////////////////////
 
+	var myCircle = Circles.create({
+		id:                  'circles-1',
+		radius:              150,
+		value:               0,
+		maxValue:            500,
+		width:               20,
+		text:                function(value){return value + '<br /><span>points</span>';},
+		colors:              ['#ddf9fc', '#2CCAD9'],
+		duration:            400,
+		wrpClass:            'circles-wrp',
+		textClass:           'circles-text',
+		valueStrokeClass:    'circles-valueStroke',
+		maxValueStrokeClass: 'circles-maxValueStroke',
+		styleWrapper:        true,
+		styleText:           true
+	});
 
-
-
-
-
-
-
-
-
+	////////////////////////////////////////////////////////////////
+	// API
+	////////////////////////////////////////////////////////////////
 
 	$scope.getPoints = function() {
-		ApiService.score.get();
-		myCircle.update(50);
+		ApiService.score.get().then(function(response) {
+			var points = response.data.points;
+			$scope.data.points = points;
+			myCircle.update(points);
+		});
 	};
 
 	$scope.setHomework = function() {
-		ApiService.homework.set(true);
+		$scope.data.homework = true;
+		ApiService.homework.set(true).then(function() {
+			$scope.getPoints();
+		});
 	};
 
 
+	////////////////////////////////////////////////////////////////
+	// Setup
+	////////////////////////////////////////////////////////////////
 
-var myCircle = Circles.create({
-  id:                  'circles-1',
-  radius:              60,
-  value:               43,
-  maxValue:            100,
-  width:               10,
-  text:                function(value){return value + '%';},
-  colors:              ['#D3B6C6', '#4B253A'],
-  duration:            400,
-  wrpClass:            'circles-wrp',
-  textClass:           'circles-text',
-  valueStrokeClass:    'circles-valueStroke',
-  maxValueStrokeClass: 'circles-maxValueStroke',
-  styleWrapper:        true,
-  styleText:           true
-});
+	$scope.poll = function() {
+		$scope.getPoints();
+	};
 
-
-
+	$interval($scope.poll, 5000);
+	$scope.poll();
 
 
 

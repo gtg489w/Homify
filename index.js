@@ -69,20 +69,20 @@ var deviceStatus = {
 app.get('/api/points', function (req, res) {
 	var points = 0;
 	if(deviceStatus.exercise) {
-		points += 150;
+		points += 100;
 	}
 	// if(deviceStatus.garbage) {
 	// points += 100;
 	// }
 	if(deviceStatus.parking) { // faked garbage
 		console.log(deviceStatus.parking);
-		points += 100;
+		points += 50;
 	}
 	if(deviceStatus.dishes) {
-		points += 150;
+		points += 50;
 	}
 	if(deviceStatus.homework) {
-		points += 200;
+		points += 300;
 	}
 	scoreboard.points = points;
 	scoreboard.status = deviceStatus;
