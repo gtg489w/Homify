@@ -20,6 +20,13 @@
 				<b>{{ 500 - data.points }}</b> Points to Next Reward
 			</div>
 
+			<div class="webrtc-video-container">
+				<button class="end-session btn">End Session</button>
+				<video id="local" style="width:220px; height: 140px;"></video>
+				</br>
+				<video id="remote" style="width:100%;"></video>
+			</div>
+
 
 			<div>
 				<button ng-click="getPoints()">GET</button>
@@ -85,10 +92,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<div class="webrtc-video-container">
-	<video id="local" style="width:320px;"></video>
-	</br>
-	<video id="remote" style="width:320px;"></video>
 </div>

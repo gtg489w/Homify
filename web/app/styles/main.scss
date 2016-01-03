@@ -3,7 +3,9 @@
 LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; Selected (Accent) #FFD300
 
 */
-
+.btn, .btn-large {
+	background: #2CCAD9!important;
+}
 
 .header-container {
 	height: 400px;
@@ -109,10 +111,36 @@ LevelUp Color Scheme: Header (Dark) #20AFBD; Calls To Action (Bright) #2CCAD9; S
 	text-align: center;
 }
 .webrtc-video-container {
-	border: 1px solid #000;
+	position: absolute;
+    top: 300px;
+    width: 100%;
+    background: #fff;
+    height: 550px;
 }
-
-
+#remote {
+	background: #000;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 10;
+}
+#local {
+	background: #abcdef;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 300px;
+	height: 140px;
+	z-index: 20;
+}
+.end-session {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 20;
+}
 
 
 
